@@ -6,6 +6,7 @@ export class CreateUserDto {
   password: string;
   confirmPassword: string;
   phoneNumber: string;
+  locale: string;
 }
 
 export class ResponseUserDto {

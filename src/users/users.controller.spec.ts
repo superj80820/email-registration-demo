@@ -5,6 +5,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { ConfigService } from '../config/config.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { EmailService } from '../email/email.service';
+import { I18NService } from '../i18n/i18n.service';
 import { PhoneService } from '../phone/phone.service';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
@@ -16,6 +17,7 @@ describe('create', () => {
   let usersService: UsersService;
   let configService: ConfigService;
   let phoneService: PhoneService;
+  let i18nService: I18NService;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
@@ -25,6 +27,7 @@ describe('create', () => {
         UsersService,
         ConfigService,
         PhoneService,
+        I18NService,
         {
           provide: getRepositoryToken(User),
           useClass: Repository,
@@ -38,6 +41,22 @@ describe('create', () => {
     usersService = app.get<UsersService>(UsersService);
     configService = app.get<ConfigService>(ConfigService);
     phoneService = app.get<PhoneService>(PhoneService);
+    i18nService = app.get<I18NService>(I18NService);
+
+    jest
+      .spyOn(i18nService, 'getMessage')
+      .mockImplementation((messageKey: string) => {
+        return {
+          errorArgs: '未帶需要的參數',
+          errorEmailFormat: 'Email 格式錯誤',
+          errorPhoneNumberFormat: '電話格式錯誤',
+          errorLessthanSpec8Number: '密碼少於8個字元',
+          errorPassordEqulConfirmPassword: '確認密碼不正確',
+          errorEmailExist: 'Email已被使用',
+          errorPhoneNumberExist: '手機已被使用',
+          welcome: '您好！ 歡迎加入 AmazingTalker',
+        }[messageKey];
+      });
 
     jest.spyOn(configService, 'get').mockImplementation(
       (key) =>
@@ -58,6 +77,7 @@ describe('create', () => {
         password: '1234567890',
         confirmPassword: '1234567890',
         phoneNumber: '0912345678',
+        locale: 'zh-TW',
       };
       request.email = undefined;
       request.phoneNumber = undefined;
@@ -76,6 +96,7 @@ describe('create', () => {
         password: '1234567890',
         confirmPassword: '1234567890',
         phoneNumber: '0912345678',
+        locale: 'zh-TW',
       };
       try {
         await usersController.create(request);
@@ -92,6 +113,7 @@ describe('create', () => {
         password: '1234567890',
         confirmPassword: '1234567890',
         phoneNumber: '0912345678',
+        locale: 'zh-TW',
       };
       try {
         await usersController.create(request);
@@ -108,6 +130,7 @@ describe('create', () => {
         password: '1234567',
         confirmPassword: '1234567',
         phoneNumber: '(866)0912345678',
+        locale: 'zh-TW',
       };
       try {
         await usersController.create(request);
@@ -124,6 +147,7 @@ describe('create', () => {
         password: '123456780',
         confirmPassword: '123456790',
         phoneNumber: '(866)0912345678',
+        locale: 'zh-TW',
       };
       try {
         await usersController.create(request);
@@ -152,6 +176,7 @@ describe('create', () => {
       password: '123456789',
       confirmPassword: '123456789',
       phoneNumber: '(866)0912345678',
+      locale: 'zh-TW',
     };
     try {
       await usersController.create(request);
@@ -182,6 +207,7 @@ describe('create', () => {
       password: '123456789',
       confirmPassword: '123456789',
       phoneNumber: '(866)0912345678',
+      locale: 'zh-TW',
     };
     try {
       await usersController.create(request);
@@ -221,6 +247,7 @@ describe('create', () => {
       password: '123456789',
       confirmPassword: '123456789',
       phoneNumber: '(866)0912345678',
+      locale: 'zh-TW',
     };
     const jwtToken = await usersController.create(request);
     expect(typeof jwtToken.token).toBe('string');

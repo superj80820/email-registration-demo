@@ -1,0 +1,22 @@
+{
+  "en-US": {
+    "errorArgs": "No required parameters",
+    "errorEmailFormat": "Email format error",
+    "errorPhoneNumberFormat": "Phone format error",
+    "errorLessthanSpec8Number": "Password is less than 8 characters",
+    "errorPassordEqulConfirmPassword": "Confirm password is incorrect",
+    "errorEmailExist": "Email has been used",
+    "errorPhoneNumberExist": "The phone is already in use",
+    "welcome": "Hello! Welcome to AmazingTalker"
+  },
+  "zh-TW": {
+    "errorArgs": "未帶需要的參數",
+    "errorEmailFormat": "Email 格式錯誤",
+    "errorPhoneNumberFormat": "電話格式錯誤",
+    "errorLessthanSpec8Number": "密碼少於8個字元",
+    "errorPassordEqulConfirmPassword": "確認密碼不正確",
+    "errorEmailExist": "Email已被使用",
+    "errorPhoneNumberExist": "手機已被使用",
+    "welcome": "您好！ 歡迎加入 AmazingTalker"
+  }
+}

@@ -18,6 +18,7 @@ import { UsersService } from './users.service';
 import { EmailService } from '../email/email.service';
 import { PhoneService } from '../phone/phone.service';
 import { ConfigService } from '../config/config.service';
+import { I18NService } from '../i18n/i18n.service';
 import * as jwt from 'jsonwebtoken';
 
 @Controller('users')
@@ -27,6 +28,7 @@ export class UsersController {
     private readonly usersService: UsersService,
     private readonly emailService: EmailService,
     private readonly phoneService: PhoneService,
+    private readonly i18nService: I18NService,
   ) {}
 
   @Post()
@@ -58,6 +60,8 @@ export class UsersController {
       },
     };
 
+    if (createUserDto.locale === undefined) createUserDto.locale = 'zh-TW';
+
     if (
       (createUserDto.email === undefined &&
         createUserDto.phoneNumber === undefined) ||
@@ -65,7 +69,10 @@ export class UsersController {
     ) {
       throw new HttpException(
         {
-          error_message: '未帶需要的參數',
+          error_message: this.i18nService.getMessage(
+            'errorArgs',
+            createUserDto.locale,
+          ),
         },
         HttpStatus.FORBIDDEN,
       );
@@ -74,7 +81,10 @@ export class UsersController {
     if (!validator.isEmail(createUserDto.email)) {
       throw new HttpException(
         {
-          error_message: 'Email 格式錯誤',
+          error_message: this.i18nService.getMessage(
+            'errorEmailFormat',
+            createUserDto.locale,
+          ),
         },
         HttpStatus.FORBIDDEN,
       );
@@ -83,7 +93,10 @@ export class UsersController {
     if (!validator.isPhoneNumber(createUserDto.phoneNumber)) {
       throw new HttpException(
         {
-          error_message: '電話格式錯誤',
+          error_message: this.i18nService.getMessage(
+            'errorPhoneNumberFormat',
+            createUserDto.locale,
+          ),
         },
         HttpStatus.FORBIDDEN,
       );
@@ -92,7 +105,10 @@ export class UsersController {
     if (validator.isContentLessthanSpecNumber(createUserDto.password, 8)) {
       throw new HttpException(
         {
-          error_message: '密碼少於8個字元',
+          error_message: this.i18nService.getMessage(
+            'errorLessthanSpec8Number',
+            createUserDto.locale,
+          ),
         },
         HttpStatus.FORBIDDEN,
       );
@@ -106,7 +122,10 @@ export class UsersController {
     ) {
       throw new HttpException(
         {
-          error_message: '確認密碼不正確',
+          error_message: this.i18nService.getMessage(
+            'errorPassordEqulConfirmPassword',
+            createUserDto.locale,
+          ),
         },
         HttpStatus.FORBIDDEN,
       );
@@ -115,7 +134,10 @@ export class UsersController {
     if (!!(await this.usersService.findOneByEmail(createUserDto.email))) {
       throw new HttpException(
         {
-          error_message: 'Email已被使用',
+          error_message: this.i18nService.getMessage(
+            'errorEmailExist',
+            createUserDto.locale,
+          ),
         },
         HttpStatus.FORBIDDEN,
       );
@@ -128,7 +150,10 @@ export class UsersController {
     ) {
       throw new HttpException(
         {
-          error_message: '手機已被使用',
+          error_message: this.i18nService.getMessage(
+            'errorPhoneNumberExist',
+            createUserDto.locale,
+          ),
         },
         HttpStatus.FORBIDDEN,
       );
@@ -137,12 +162,18 @@ export class UsersController {
     const user = await this.usersService.create(createUserDto);
     await this.emailService.sendEmail(
       'AmazingTalker',
-      `${createUserDto.email} 您好！ 歡迎加入 AmazingTalker`,
+      `${createUserDto.email} ${this.i18nService.getMessage(
+        'welcome',
+        createUserDto.locale,
+      )}`,
       createUserDto.email,
     );
     await this.phoneService.sendSMS(
       'AmazingTalker',
-      `${createUserDto.email} 您好！ 歡迎加入 AmazingTalker`,
+      `${createUserDto.email} ${this.i18nService.getMessage(
+        'welcome',
+        createUserDto.locale,
+      )}`,
       createUserDto.phoneNumber,
     );
 
