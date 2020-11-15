@@ -6,7 +6,8 @@
 
 ## 供面試官驗證
 
-- i18n 與 Unit Test 都已實作
+- i18n 已實作: 可在註冊 request 的 locale 欄位輸入`en-US`, `zh-TW`
+- Unit Test 已實作
 
 ---
 
@@ -25,7 +26,7 @@
      "email": "yorkEmail@gmail.com",
      "password": "thisIsPassword",
      "confirmPassword": "thisIsPassword",
-     "phoneNumber": "(800)0958878516",
+     "phoneNumber": "(866)0958878516",
      "locale": "zh-TW"
    }'
    ```
@@ -47,7 +48,7 @@
        "id": 1,
        "name": "yorkName",
        "email": "yorkEmail@gmail.com",
-       "phoneNumber": "(800)0958878516"
+       "phoneNumber": "(866)0958878516"
      }
    ]
    ```
