@@ -1,8 +1,7 @@
 ## 需要安裝
 
-1. Node.js: v14.15.0
-2. docker
-3. docker-compose
+1. docker
+2. docker-compose
 
 ## 供面試官驗證
 
@@ -11,29 +10,28 @@
 
 ---
 
-1. 安裝 Node.js 依賴: `npm install`
-2. 測試 Unit Test: `npm run test`
-3. 啟動 DB: `docker-compose up`
-4. 啟動 Server: `npm run start`
-5. 在 Terminal 呼叫 curl 來註冊
+1. 安裝 Node.js 依賴: `docker-compose run --entrypoint="npm install" server`
+2. 測試 Unit Test: `docker-compose run --entrypoint="npm run test" server`
+3. 啟動 Server 與 DB: `docker-compose up`
+4. 在 Terminal 呼叫 curl 來註冊
 
    ```bash
    curl --request POST \
      --url http://localhost:3000/users/ \
      --header 'content-type: application/json' \
      --data '{
-     "name": "yorkName",
-     "email": "yorkEmail@gmail.com",
+     "name": "yourName",
+     "email": "yourEmail@gmail.com",
      "password": "thisIsPassword",
      "confirmPassword": "thisIsPassword",
-     "phoneNumber": "(866)0958878516",
+     "phoneNumber": "(866)0912378516",
      "locale": "zh-TW"
    }'
    ```
 
-6. 註冊成功獲得 token 並且收到信件
-   ![](https://i.imgur.com/l2G1v0D.png)
-7. 使用 curl 查看所有 users
+5. 註冊成功獲得 token 並且收到信件
+   ![](https://i.imgur.com/BcgUrwB.png)
+6. 使用 curl 查看所有 users
 
    ```bash
    curl --request GET \
@@ -46,9 +44,9 @@
    [
      {
        "id": 1,
-       "name": "yorkName",
-       "email": "yorkEmail@gmail.com",
-       "phoneNumber": "(866)0958878516"
+       "name": "yourName",
+       "email": "yourEmail@gmail.com",
+       "phoneNumber": "(866)0912378516"
      }
    ]
    ```

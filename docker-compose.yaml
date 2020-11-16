@@ -9,3 +9,15 @@ services:
       MYSQL_DATABASE: test
     ports:
       - "3306:3306"
+
+  server:
+    image: node:14.15.0-alpine
+    restart: always
+    depends_on:
+      - mysql
+    working_dir: /app
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/app
+    entrypoint: npm run start:dev
