@@ -162,7 +162,7 @@ export class UsersController {
     const user = await this.usersService.create(createUserDto);
     await this.emailService.sendEmail(
       'AmazingTalker',
-      `${createUserDto.email} ${this.i18nService.getMessage(
+      `${createUserDto.name} ${this.i18nService.getMessage(
         'welcome',
         createUserDto.locale,
       )}`,
@@ -170,7 +170,7 @@ export class UsersController {
     );
     await this.phoneService.sendSMS(
       'AmazingTalker',
-      `${createUserDto.email} ${this.i18nService.getMessage(
+      `${createUserDto.name} ${this.i18nService.getMessage(
         'welcome',
         createUserDto.locale,
       )}`,

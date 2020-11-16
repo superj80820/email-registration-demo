@@ -11,7 +11,12 @@ export class I18NService {
     this.i18n = JSON.parse(fs.readFileSync(i18nFile, { encoding: 'utf-8' }));
   }
 
-  getMessage(messageKey: string, locale: string): string {
-    return this.i18n[locale][messageKey];
+  getMessage(messageKey: string, locale = 'zh-TW'): string {
+    const formatLocaleWithDefaultValue = (locale: string, i18n) =>
+      Object.keys(i18n).includes(locale) ? locale : 'zh-TW';
+
+    return this.i18n[formatLocaleWithDefaultValue(locale, this.i18n)][
+      messageKey
+    ];
   }
 }
